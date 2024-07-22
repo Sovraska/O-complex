@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8" id="my-data" data-time="{{ time }}" data-temperature="{{ temperature }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+        {% block title %}
+        нет Заголовка
+        {% endblock %}
+    </title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <link href='https://fonts.googleapis.com/css?family=Architects Daughter' rel='stylesheet'>
+    <link href="{{ url_for('static', path='/css/main.css') }}" rel='stylesheet' type="text/css">
+</head>
+<body style="background-image: linear-gradient(180deg, rgba(245, 245, 245, 100%), rgba(245, 245, 245, 0%)), url({{url_for('static', path='img/'+ 'fluffy-clouds-on-the-sky.jpg')}})">
+{% include 'includes/header.html' %}
+<main>
+    <div>
+        {% block content %}
+        Контент не подвезли :(
+        {% endblock %}
+    </div>
+</main>
+<script id="my-script">
+    function getCookie(name) {
+        let matches = document.cookie.match(new RegExp(
+            "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+        ));
+        return matches ? decodeURIComponent(matches[1]) : undefined;
+    }
+
+    var city_name = getCookie('city_name')
+    if (city_name) {
+        document.getElementById('city_name').value = city_name.replaceAll('\"', '')
+    }
+
+    var time = "{{ time }}";
+    var temperature = "{{ temperature }}";
+
+
+    const config = {
+        type: "line",
+        data: {
+            labels: [],
+            datasets: [{
+                data: [], // Set initially to empty data
+                label: "temperature",
+                borderColor: "#3e95cd",
+                fill: false
+            }]
+        },
+        options: {
+            scales: {
+                xAxes: [{
+                    type: "time",
+                    distribution: "linear"
+                }],
+                title: {
+                    display: false
+                }
+            }
+        }
+    };
+    const csvToChartData = (time, temperature) => {
+            var lines = []
+            time = time.replace(['['], '').replace(']', '').split(',')
+            temperature = temperature.replace(['['], '').replace(']', '').split(',')
+            for (let i = 0; i < time.length; i++) {
+                lines.push([time[i], temperature[i]])
+            }
+
+            return lines.map(line => {
+                const [date, temperature] = line
+
+                function format_time(s) {
+                    return new Date(s * 1e3).toISOString()
+                }
+
+                var date2 = format_time(date)
+                return {
+                    x: date2,
+                    y: temperature
+                }
+            });
+        };
+    canvas = document.getElementById('canvas1');
+
+
+    canvas.innerHTML = ''
+    const ctx = canvas.getContext("2d");
+    const temperatureChart = new Chart(ctx, config);
+
+
+
+    temperatureChart.data.datasets[0].data = csvToChartData(time, temperature);
+    temperatureChart.update();
+
+    function put_in_text_box(string) {
+        document.getElementById('city_name').value = string
+    }
+
+    function get_city() {
+        var text_input = document.getElementById('city_name')
+        const data = {
+            city_name: text_input.value,
+        };
+
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        };
+
+        fetch('/city/', requestOptions).then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        }).then(data => {
+            if (data['results']) {
+                let city = data['results']
+                document.getElementById('output_text').innerHTML = "" +
+                    "<tr>" +
+                    '<th scope="col" >Name</th>' +
+                    '<th scope="col" >Population</th>' +
+                    '</tr>'
+                for (let i = 0; i < city.length; i++) {
+                    let name = city[i]['name']
+                    let population = city[i]['population']
+                    let button = `
+                          <tr>
+                            <td>
+                                <button onclick="put_in_text_box('${name}')">${name}</button>
+                            </td>
+                            <td>
+                                ${population}
+                            </td>
+                          </tr>`
+                    document.getElementById('output_text').innerHTML += button
+                }
+            }
+
+        })
+
+    }
+
+    function save_statistic() {
+        var text_input = document.getElementById('city_name')
+        const data = {
+            city_name: text_input.value,
+        };
+
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        };
+
+        fetch('/city/statistic', requestOptions).then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            }
+        )
+    }
+</script>
+</body>
+</html>

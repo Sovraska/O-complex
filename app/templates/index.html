@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Weather-gether
+{% endblock %}
+
+{% block content %}
+<div id="main_content">
+    <div id="title">
+        <h1>
+            The Whether gether
+        </h1>
+    </div>
+
+    <div id="search" class="dropdown">
+        <div id="sub_search">
+            <form class="dropbtn" id="city_form" method="get" action="/weather" autocomplete="off">
+                <input type="text" id="city_name" name="city_name" onkeyup="get_city()">
+                <input class="submit" type="submit" value="Submit" onclick="save_statistic()">
+                <div class="dropdown-content">
+                    <table id="output_text"></table>
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+    <div id="temperature">
+        <canvas id="canvas1"></canvas>
+    </div>
+
+
+    {% if score_board %}
+    <div id="score_board">
+        <table id="score_table">
+            <tr>
+                <td><h2>Name</h2></td>
+                <td><h2>search rate</h2></td>
+            </tr>
+            {% for score in score_board %}
+            <tr>
+                <td>{{ score.0 }}</td>
+                <td>{{ score.1 }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    {% endif %}
+</div>
+{% endblock %}
+

@@ -1,0 +1,118 @@
+body {
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+}
+
+div#main_content {
+    margin: auto;
+    width: 80%;
+    display: block;
+}
+
+table {
+    background-color: rgba(240, 240, 240, 40%);
+    border-collapse: collapse;
+    border: 2px solid rgb(205, 205, 205);
+    font-family: sans-serif;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+
+}
+
+div#title {
+    margin: auto;
+    width: 80%;
+    display: block;
+    font-family: 'Architects Daughter';
+    font-size: 24px;
+    text-align: center
+}
+
+div#search {
+    margin: auto;
+    width: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+div#sub_search {
+    background-color: rgba(240, 240, 240, 80%);
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    height: 100px;
+    width: 350px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 30px;
+}
+
+div#temperature {
+    background-color: rgba(240, 240, 240, 40%);
+    margin: auto;
+    width: 80%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 50px;
+    border-radius: 30px;
+}
+
+canvas#canvas {
+    margin: auto;
+    width: 80%;
+    display: block;
+}
+
+div#score_board {
+    padding-top: 50px;
+    margin: auto;
+    display: table;
+    width: 80%;
+
+}
+
+table#score_table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 2px solid rgb(205, 205, 205);
+    font-family: sans-serif;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+}
+
+
+.dropbtn {
+    /*padding: 16px;*/
+    /*font-size: 16px;*/
+    border: none;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 120px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
