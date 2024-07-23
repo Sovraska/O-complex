@@ -30,7 +30,7 @@
 1. Установите на сервере `docker` и `docker-compose`
 2. Создайте файл `/infra/.env` Шаблон для заполнения файла находится в `/infra/.env.example`
 3. Из директории `/infra/` выполните команду `docker-compose up -d --buld`
-4. Примините миграции `alembic upgrade head`
+4. Примените миграции `alembic upgrade head`
 5. После чего можно перейти на [основную страницу](http://localhost/weather/)
 
 ## **Как запустить проект Локально **:
